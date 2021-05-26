@@ -2,8 +2,8 @@
 Defines the drawer class.
 """
 import pygame
-from pygame import draw
 import numpy as np
+from parameters import drawing_size
 
 
 class Drawer:
@@ -25,11 +25,6 @@ class Drawer:
         for boid in boids:
             center = boid.location()
 
-            # Translate the direction between 0 and 2pi
-            dir = -boid.direction()
-            rot_matrix = np.array([[np.cos(dir), -np.sin(dir)],
-                                   [np.sin(dir), np.cos(dir)]])
-
             # Compute the summits of the triangle
             # The triangle is isocele with angles (40, 70, 70)
             summits = np.array([
@@ -37,7 +32,14 @@ class Drawer:
                 [np.cos(2.18166), np.sin(2.18166)],  # 125 degrees in rads
                 [np.cos(-2.18166), np.sin(-2.18166)]
             ])
+
+            # Rotate the triangle according to the direction of the boid
+            dir = -boid.direction()
+            rot_matrix = np.array([[np.cos(dir), -np.sin(dir)],
+                                   [np.sin(dir), np.cos(dir)]])
             summits = np.dot(rot_matrix, summits.transpose()).transpose()
-            summits *= 5
+
+            # Give its size and translate it to the boid's location
+            summits *= drawing_size
             summits += center
             pygame.draw.polygon(self._screen, (0, 0, 0), summits)
