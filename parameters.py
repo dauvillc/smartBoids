@@ -3,10 +3,13 @@ Defines values for the simulation parameters
 """
 
 limits = 600  # Size of the window. Default: 800
-delay = 15  # Delay between each frame in ms. Default: 20
-number_of_boids = 30  # I think the name is quite clear. Default: 30
+delay = 10  # Delay between each frame in ms. Default: 20
+number_of_boids = 60  # I think the name is quite clear. Default: 30
 
 drawing_size = 5  # Size of the boids as drawed on screen. Default: 5
+draw_trajectories = False  # Whether to draw the boids themselves or their trajectories. Default: False.
+trajectories_length = 100  # Length (in number of locations) of the trajectories if draw_trajectories is True.
+# Defaults to 100.
 
 turns_smoothness = 0.8  # Smoothness of the changes of direction, within [0, 1[. Defaults to 0.8.
 # (At 1, boids cannot turn; at 0 they turn instantly).

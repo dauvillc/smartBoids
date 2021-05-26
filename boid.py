@@ -3,7 +3,8 @@ Defines the Boid class
 """
 import numpy as np
 from parameters import neighbours_considered, limits, walls_param, collision_param, grouping_param,\
-    average_direction_param, turns_smoothness
+    average_direction_param, turns_smoothness, draw_trajectories, trajectories_length
+from queue import Queue
 
 
 class Boid:
@@ -14,6 +15,10 @@ class Boid:
     def __init__(self, x, y):
         self._location = np.array([x, y])
         self._direction = np.random.random() * 2 * np.pi - np.pi
+        # Memorizes the last locations to be able to draw the boid's trajectory
+        self.trajectory = Queue(trajectories_length)
+
+        self.color = np.random.randint(0, 255, 3)
 
     def decide(self, boids_distances, other_locations, other_directions):
         """
@@ -139,6 +144,12 @@ class Boid:
         # Move slightly in the boid's new direction
         self._location[0] += np.cos(self._direction)
         self._location[1] -= np.sin(self._direction)
+
+        # If needed, memorize the new location. However, only a certain number of locations are memorized
+        if draw_trajectories:
+            if self.trajectory.full():
+                self.trajectory.get()
+            self.trajectory.put(self._location)
 
         # Make sure the boid does not get out of the window
         self._location = np.minimum(self._location, np.array([limits, limits]))

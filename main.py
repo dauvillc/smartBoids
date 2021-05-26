@@ -4,7 +4,7 @@ from pygame import locals
 from boid import Boid
 import numpy as np
 from drawer import Drawer
-from parameters import limits, delay, number_of_boids
+from parameters import limits, delay, number_of_boids, draw_trajectories
 
 
 if __name__ == '__main__':
