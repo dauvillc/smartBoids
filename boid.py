@@ -33,9 +33,9 @@ class Boid:
         closest = np.argmin(boids_distances)
         closest_distance = boids_distances[closest]
 
-        group_angle, group_weight = self.grouping_steer(other_locations)
-        avg_angle, avg_weight = self.average_direction(other_directions)
-        opposite_angle, opp_weight = self.collision_avoiding_direction(other_locations[closest], closest_distance)
+        group_angle, group_weight = self.coherence(other_locations)
+        avg_angle, avg_weight = self.alignment(other_directions)
+        opposite_angle, opp_weight = self.separation(other_locations[closest], closest_distance)
         walls_angles, walls_weights = self.wall_directions()
 
         # Normalize the weights so that their sum is 1
@@ -54,7 +54,7 @@ class Boid:
         return final_dir
 
     # RUUUUUUULES ------------------------------------------------------------------------------------------------------
-    def grouping_steer(self, other_locations):
+    def coherence(self, other_locations):
         """
         -- boids_distances: Distances of the boids to take into account as a np array
         -- other_locations: 2D np array where the lines are the other boid's locations
@@ -72,7 +72,7 @@ class Boid:
         # DO NOT use the arithmetic mean ! Use the angular average
         return np.arctan2(delta_y, delta_x), grouping_param
 
-    def average_direction(self, other_directions):
+    def alignment(self, other_directions):
         """
         -- other_directions: numpy array containing the directions of the boids to take into account.
         returns a, w where:
@@ -82,7 +82,7 @@ class Boid:
         avg = np.arctan2(np.mean(np.sin(other_directions)), np.mean(np.cos(other_directions)))
         return avg, average_direction_param
 
-    def collision_avoiding_direction(self, closest_boid_location, closest_dist):
+    def separation(self, closest_boid_location, closest_dist):
         """
         -- closest_boid_location: Location of the closest boid (numpy array of 2 values)
         -- closest_dist: Distance to that boid
