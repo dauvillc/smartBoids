@@ -14,5 +14,5 @@ or their direction depends on several parameters which define the rules more pre
 
 ## Requirements
 Python - Numpy; Pygame;
-From a certain number of boids on, the application will start to slow down and may need to many ressources. The program is coded in Python and especially pygame
+From a certain number of boids on, the application will start to slow down and may need too many ressources. The program is coded in Python and especially pygame
 which makes it inevitably slow compared to C with the native SDL2 library.
