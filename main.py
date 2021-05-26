@@ -4,7 +4,7 @@ from pygame import locals
 from boid import Boid
 import numpy as np
 from drawer import Drawer
-from parameters import limits, delay
+from parameters import limits, delay, number_of_boids
 
 
 if __name__ == '__main__':
@@ -15,7 +15,7 @@ if __name__ == '__main__':
     pygame.display.update()
     drawer = Drawer(screen)
 
-    boids = [Boid(*(np.random.random(2) * limits)) for _ in range(30)]
+    boids = [Boid(*(np.random.random(2) * limits)) for _ in range(number_of_boids)]
 
     while True:
         for event in pygame.event.get():

@@ -2,7 +2,8 @@
 Defines the Boid class
 """
 import numpy as np
-from parameters import neighbours_considered, limits, walls_param, collision_param
+from parameters import neighbours_considered, limits, walls_param, collision_param, grouping_param,\
+    average_direction_param, turns_smoothness
 
 
 class Boid:
@@ -69,7 +70,7 @@ class Boid:
             return 0, 0
 
         # DO NOT use the arithmetic mean ! Use the angular average
-        return np.arctan2(delta_y, delta_x), 1
+        return np.arctan2(delta_y, delta_x), grouping_param
 
     def average_direction(self, other_directions):
         """
@@ -79,7 +80,7 @@ class Boid:
         -- w is the weight to attribute to that direction (see parameters.py).
         """
         avg = np.arctan2(np.mean(np.sin(other_directions)), np.mean(np.cos(other_directions)))
-        return avg, 0.2
+        return avg, average_direction_param
 
     def collision_avoiding_direction(self, closest_boid_location, closest_dist):
         """
@@ -129,7 +130,7 @@ class Boid:
         # so that the boid's change of directions are smooth
         directions = np.array([self.decide(boids_distances, other_boids, other_directions),  # Ideal direction
                                self._direction])
-        directional_weights = np.array([0.2, 0.8])  # Weight for the new and ancient directions
+        directional_weights = np.array([1 - turns_smoothness, turns_smoothness])  # Weight for the new and ancient directions
 
         # Angular weighted average between the ancient and current directions
         self._direction = np.arctan2(np.average(np.sin(directions), weights=directional_weights),
